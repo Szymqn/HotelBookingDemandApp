@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .navbar {
+        width: 250px;
+        overflow: auto;
+        height: 100vh;
+        position: fixed;
+    }
+
+    .navbar a {
+        display: block;
+        padding: 12px;
+        color: black;
+        text-decoration: none;
+        font-size: 17px;
+        border-radius: 15px;
+    }
+
+    .navbar a i {
+        margin-right: 16px;
+    }
+
+    .navbar a i, .navbar a span {
+        vertical-align: middle;
+        margin-right: 24px;
+    }
+
+    .navbar a:hover {
+        background-color: darkviolet;
+        color: white;
+    }
+
+    .active {
+        background-color: royalblue;
+        color: white !important;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+        font-size: 28px;
+    }
+</style>
+
+<div class="navbar">
+    <a class="active" href="#"><span class="material-symbols-outlined">home</span> Dashboard</a>
+    <a href="#"><span class="material-symbols-outlined">trending_up</span> Demand Forecast</a>
+    <a href="#"><span class="material-symbols-outlined">network_intel_node</span> AI Insights</a>
+    <a href="#"><span class="material-symbols-outlined">calendar_month</span> Bookings</a>
+    <a href="#"><span class="material-symbols-outlined">analytics</span> Analytics</a>
+    <a href="#"><span class="material-symbols-outlined">hotel</span> Hotels</a>
+    <a href="#"><span class="material-symbols-outlined">group</span> Customers</a>
+    <a href="#"><span class="material-symbols-outlined">settings</span> Settings</a>
+</div>
+</html>
