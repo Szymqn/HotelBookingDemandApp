@@ -1,8 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}Analytics{% endblock %}
+{% block title %}Demand Forecast{% endblock %}
 
 {% block content %}
-    <h1>Analytics</h1>
+    <h1>Demand Forecast</h1>
     <p>AI-powered demand predictions and capacity planning</p>
+    <div class="grid">
+        <div class="card">
+            <h3>Next Month Prediction</h3>
+            <div class="value">94%</div>
+            <div class="description">Expected occupancy rate</div>
+        </div>
+        <div class="card">
+            <h3>Peak Season Alert</h3>
+            <div class="value">Dec 15-31</div>
+            <div class="description">Highest demand period</div>
+        </div>
+        <div class="card">
+            <h3>Capacity Warning</h3>
+            <div class="value">98%</div>
+            <div class="description">December utilization</div>
+        </div>
+        <div class="card">
+            <h3>Annual Demand Forecast</h3>
+            <p>[Insert demand forecast chart here]</p>
+        </div>
+        <div class="card">
+            <h3>Seasonal Factors</h3>
+            <div>Key factors influencing demand predictions</div>
+            <div class="card">
+                <h3>Holiday Season</h3>
+                <div class="description">95% confidence</div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
