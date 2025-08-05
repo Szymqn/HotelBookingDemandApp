@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>AI Insights</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-        }
+{% extends 'base.html' %}
 
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            flex-grow: 1;
-        }
-    </style>
-</head>
-<body>
-    {% include 'navbar.html' %}
-    <div class="content">
-        <h1>AI Insights</h1>
-        <p style="color: grey">Explainable AI analysis of booking demand patterns and predictions</p>
-    </div>
-</body>
-</html>
+{% block title %}AI Insights{% endblock %}
+
+{% block content %}
+    <h1>AI Insights</h1>
+    <p>Explainable AI analysis of booking demand patterns and predictions</p>
+{% endblock %}
