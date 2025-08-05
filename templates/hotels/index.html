@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Hotels{% endblock %}
+
+{% block content %}
+    <h1>Hotels</h1>
+    <p>Manage your hotel properties and room inventory</p>
+    <div class="grid">
+        <div class="card">
+            <h3>Total Properties</h3>
+            <div class="value">3</div>
+            <div class="description">Active hotels</div>
+        </div>
+        <div class="card">
+            <h3>Total Rooms</h3>
+            <div class="value">553</div>
+            <div class="description">Across all properties</div>
+        </div>
+        <div class="card">
+            <h3>Avg. Occupancy</h3>
+            <div class="value">85.7%</div>
+            <div class="description">Last 30 days</div>
+        </div>
+        <div class="card">
+            <h3>Avg. rating</h3>
+            <div class="value">4.6</div>
+            <div class="description">Guest satisfaction</div>
+        </div>
+    </div>
+    
+    <div class="section-title"></div>
+    
+    <div class="grid">
+        <div class="card wide-card">
+            <h3>Hotel Properties</h3>
+            <div class="description">Overview of all your hotel locations</div>
+        </div>
+    </div>
+{% endblock %}

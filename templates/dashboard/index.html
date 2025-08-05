@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Overview of your hotel booking demand and AI insights</p>
+    <div class="grid">
+        <div class="card">
+            <h3>Total Bookings</h3>
+            <div class="value">2,834</div>
+            <div class="change">+12.5% this month</div>
+        </div>
+        <div class="card">
+            <h3>Revenue</h3>
+            <div class="value">$124,560</div>
+            <div class="change">+8.3% growth</div>
+        </div>
+        <div class="card">
+            <h3>Occupancy Rate</h3>
+            <div class="value">76%</div>
+            <div class="change">+3.2% since last week</div>
+        </div>
+        <div class="card">
+            <h3>New Customers</h3>
+            <div class="value">143</div>
+            <div class="change">+5.9% increase</div>
+        </div>
+    </div>
+
+    <div class="section-title">Demand Forecast & AI Insights</div>
+
+    <div class="grid">
+        <div class="card wide-card">
+            <h3>Hotel Demand Forecast</h3>
+            <p>[Insert demand forecast chart here]</p>
+        </div>
+        <div class="card">
+            <h3>AI Insights</h3>
+            <p></p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'navbar/style.css' %}">
+
+<div class="navbar">
+    <div class="navbar-header">
+        BookWise AI
+    </div>
+
+    <a class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+        <span class="material-symbols-outlined">home</span> Dashboard
+    </a>
+    <a class="{% if request.resolver_match.url_name == 'demand_forecast' %}active{% endif %}" href="{% url 'demand_forecast' %}"><span class="material-symbols-outlined">trending_up</span> Demand Forecast</a>
+    <a class="{% if request.resolver_match.url_name == 'ai_insights' %}active{% endif %}" href="{% url 'ai_insights' %}"><span class="material-symbols-outlined">network_intel_node</span> AI Insights</a>
+    <a class="{% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="{% url 'bookings' %}"><span class="material-symbols-outlined">calendar_month</span> Bookings</a>
+    <a class="{% if request.resolver_match.url_name == 'analytics' %}active{% endif %}" href="{% url 'analytics' %}"><span class="material-symbols-outlined">analytics</span> Analytics</a>
+    <a class="{% if request.resolver_match.url_name == 'hotels' %}active{% endif %}" href="{% url 'hotels' %}"><span class="material-symbols-outlined">hotel</span> Hotels</a>
+    <a class="{% if request.resolver_match.url_name == 'customers' %}active{% endif %}" href="{% url 'customers' %}"><span class="material-symbols-outlined">group</span> Customers</a>
+    <a class="{% if request.resolver_match.url_name == 'user_settings' %}active{% endif %}" href="{% url 'user_settings' %}"><span class="material-symbols-outlined">settings</span> Settings</a>
+</div>

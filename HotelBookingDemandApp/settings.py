@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+
+from django.contrib.staticfiles.finders import AppDirectoriesFinder
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -40,6 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "dashboard.apps.DashboardConfig",
+    "demand_forecast.apps.DemandFotecastConfig",
+    "ai_insights.apps.AiInsightsConfig",
+    "bookings.apps.BookingsConfig",
+    "analytics.apps.AnalyticsConfig",
+    "hotels.apps.HotelsConfig",
+    "customers.apps.CustomersConfig",
+    "user_settings.apps.UserSettingsConfig",
 ]
 
 MIDDLEWARE = [
@@ -119,6 +129,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
