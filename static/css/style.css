@@ -6,9 +6,13 @@ body {
 
 
 .content {
-    margin-left: 250px;
-    padding: 20px;
+    margin-left: 300px;
+    margin-right: 50px;
     flex-grow: 1;
+}
+
+.content p {
+    color: slategrey;
 }
 
 .grid {
