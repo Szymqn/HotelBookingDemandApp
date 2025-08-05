@@ -40,7 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "dashboard.apps.DashboardConfig"
+    "dashboard.apps.DashboardConfig",
+    "demand_forecast.apps.DemandFotecastConfig",
+    "ai_insights.apps.AiInsightsConfig",
+    "bookings.apps.BookingsConfig",
+    "analytics.apps.AnalyticsConfig",
+    "hotels.apps.HotelsConfig",
+    "customers.apps.CustomersConfig",
+    "user_settings.apps.UserSettingsConfig"
 ]
 
 MIDDLEWARE = [
