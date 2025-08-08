@@ -22,9 +22,7 @@ urlpatterns = [
     path('ai_insights/', include('ai_insights.urls')),
     path('analytics/', include('analytics.urls')),
     path('bookings/', include('bookings.urls')),
-    path('customers/', include('customers.urls')),
     path('', include('dashboard.urls')),
     path('demand_forecast/', include('demand_forecast.urls')),
-    path('hotels/', include('hotels.urls')),
     path('user_settings/', include('user_settings.urls')),
 ]
