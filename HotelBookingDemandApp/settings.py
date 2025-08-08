@@ -47,8 +47,6 @@ INSTALLED_APPS = [
     "ai_insights.apps.AiInsightsConfig",
     "bookings.apps.BookingsConfig",
     "analytics.apps.AnalyticsConfig",
-    "hotels.apps.HotelsConfig",
-    "customers.apps.CustomersConfig",
     "user_settings.apps.UserSettingsConfig",
 ]
 
