@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "bookings.apps.BookingsConfig",
     "analytics.apps.AnalyticsConfig",
     "user_settings.apps.UserSettingsConfig",
+    "django_tables2"
 ]
 
 MIDDLEWARE = [
