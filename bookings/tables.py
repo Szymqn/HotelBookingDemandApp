@@ -8,3 +8,4 @@ class BookingTable(tables.Table):
         model = Booking
         template_name = "django_tables2/semantic.html"
         attrs = {"class": "ui celled striped table"}
+        order_by = ["-arrival_date"]

@@ -53,13 +53,13 @@ body {
 }
 
 .card .data-container {
-    padding: 0;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .card .data-container .table {
-    height: 100%;
-    margin-left: -500px;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .wide-card {
