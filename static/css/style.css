@@ -52,6 +52,16 @@ body {
     color: slategrey;
 }
 
+.card .data-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.card .data-container .table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
 .wide-card {
     grid-column: span 2;
 }

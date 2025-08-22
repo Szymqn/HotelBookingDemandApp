@@ -1,4 +1,7 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
 {% extends 'base.html' %}
+{% load render_table from django_tables2 %}
 
 {% block title %}Bookings{% endblock %}
 
@@ -8,32 +11,30 @@
     <div class="grid">
         <div class="card">
             <h3>Total Bookings</h3>
-            <div class="value">2,834</div>
+            <div class="value">{{ total_bookings }}</div>
             <div class="change">+12.5% this month</div>
         </div>
         <div class="card">
-            <h3>Revenue</h3>
-            <div class="value">$124,560</div>
-            <div class="change">+8.3% growth</div>
-        </div>
-        <div class="card">
-            <h3>Avg. Stay</h3>
-            <div class="value">3.2</div>
+            <h3>Avg. Stay per month</h3>
+            <div class="value">{{ avg_stay_per_month }}</div>
             <div class="change">nights per booking</div>
         </div>
         <div class="card">
-            <h3>Cancellation Rate</h3>
-            <div class="value">4.2%</div>
+            <h3>Cancellation Rate per month</h3>
+            <div class="value">{{ avg_cancellation_rate }}%</div>
             <div class="change">-1.2% from last month</div>
         </div>
     </div>
-    
+
     <div class="section-title"></div>
-    
+
     <div class="grid">
-        <div class="card wide-card">
-            <h3>Recent Bookings</h3>
-            <div class="description">Latest reservations and their status</div>
+        <div class="card">
+            <div class="data-container">
+                <div class="table-scroll">
+                    {% render_table table %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
