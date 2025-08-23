@@ -5,26 +5,37 @@
 {% block content %}
     <h1>Analytics</h1>
     <p>View analytics and reports here.</p>
-    <div class="grid">
-        <div class="card">
-            <h3>ADR</h3>
-            <div class="value">$185</div>
-            <div class="description">Average Daily Rate</div>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">ADR</h5>
+                        <p class="card-text">$185</p>
+                        <p class="card-text fs-7">Average Daily Rate</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg. Length of Stay</h5>
+                        <p class="card-text">3.4</p>
+                        <p class="card-text fs-7">Nights per booking</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Avg. Length of Stay</h3>
-            <div class="value">3.4</div>
-            <div class="description">nights per booking</div>
-        </div>
-    </div>
-
-    <div class="section-title"></div>
-
-    <div class="grid">
-        <div class="card wide-card">
-            <h3>Revenue Trends</h3>
-            <div class="description">Monthly revenue and booking volume analysis</div>
-            [Insert demand forecast chart here]
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Revenue Trends</h5>
+                        <p class="card-text">Monthly revenue and booking volume analysis</p>
+                        <p class="card-text">[Insert demand forecast chart here]</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

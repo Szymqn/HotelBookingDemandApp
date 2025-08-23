@@ -4,32 +4,50 @@
 
 {% block content %}
     <h1>Dashboard</h1>
-    <p>Overview of your hotel booking demand and AI insights</p>
-    <div class="grid">
-        <div class="card">
-            <h3>Total Bookings</h3>
-            <div class="value">{{ total_bookings }}</div>
+    <h6>Overview of your hotel booking demand and AI insights</h6>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Bookings</h5>
+                        <p class="card-text">{{ total_bookings }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg. ADR</h5>
+                        <p class="card-text">{{ avg_adr }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg. Room Occupy</h5>
+                        <p class="card-text">{{ avg_room_occupy }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Avg. ADR</h3>
-            <div class="value">${{ avg_adr }}</div>
-        </div>
-        <div class="card">
-            <h3>Avg. Length of stay</h3>
-            <div class="value">{{ avg_room_occupy }}</div>
-        </div>
-    </div>
-
-    <div class="section-title">Demand Forecast & AI Insights</div>
-
-    <div class="grid">
-        <div class="card wide-card">
-            <h3>Hotel Demand Forecast</h3>
-            <p>[Insert demand forecast chart here]</p>
-        </div>
-        <div class="card">
-            <h3>AI Insights</h3>
-            <p></p>
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Hotel Demand Forecast</h3>
+                        <p class="card-text">[Insert demand forecast charts here]</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">AI Insights</h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

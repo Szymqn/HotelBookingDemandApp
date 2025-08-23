@@ -65,10 +65,10 @@ def index(request):
         'bookings/index.html',
         {
             'total_bookings': total_bookings,
-            'avg_stay_in_month': round(avg_stay_in_month, 2),
-            'change_of_stay_from_the_previous_month': round(avg_stay_in_month - avg_stay_in_previous_month, 2),
-            'avg_cancellation_rate_in_month': round(avg_cancellation_rate_in_month, 2),
-            'change_of_cancellation_rate_from_the_previous_month': round(avg_cancellation_rate_in_month - avg_cancellation_rate_in_previous_month, 2),
+            'avg_stay_in_month': round(avg_stay_in_month, 4),
+            'change_of_stay_from_the_previous_month': round(avg_stay_in_month - avg_stay_in_previous_month, 4),
+            'avg_cancellation_rate_in_month': round(avg_cancellation_rate_in_month, 4),
+            'change_of_cancellation_rate_from_the_previous_month': round(avg_cancellation_rate_in_month - avg_cancellation_rate_in_previous_month, 4),
             'table': table,
         }
     )

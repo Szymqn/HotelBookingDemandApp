@@ -5,32 +5,58 @@
 {% block content %}
     <h1>Demand Forecast</h1>
     <p>AI-powered demand predictions and capacity planning</p>
-    <div class="grid">
-        <div class="card">
-            <h3>Next Month Prediction</h3>
-            <div class="value">94%</div>
-            <div class="description">Expected occupancy rate</div>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Next Month Prediction</h5>
+                        <p class="card-text fs-4">94%</p>
+                        <p class="card-text fs-6">Expected occupancy rate</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Peak Season Alert</h5>
+                        <p class="card-text fs-4">Dec 15-31</p>
+                        <p class="card-text fs-6">Highest demand period</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Capacity Warning</h5>
+                        <p class="card-text fs-4">98%</p>
+                        <p class="card-text fs-6">December utilization</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Peak Season Alert</h3>
-            <div class="value">Dec 15-31</div>
-            <div class="description">Highest demand period</div>
-        </div>
-        <div class="card">
-            <h3>Capacity Warning</h3>
-            <div class="value">98%</div>
-            <div class="description">December utilization</div>
-        </div>
-        <div class="card">
-            <h3>Annual Demand Forecast</h3>
-            <p>[Insert demand forecast chart here]</p>
-        </div>
-        <div class="card">
-            <h3>Seasonal Factors</h3>
-            <div>Key factors influencing demand predictions</div>
-            <div class="card">
-                <h3>Holiday Season</h3>
-                <div class="description">95% confidence</div>
+        <div class="row mb-4">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Annual Demand Forecast</h5>
+                        <p class="card-text fs-6">[Insert demand forecast chart here]</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Seasonal Factors</h5>
+                        <p class="card-text fs-6">Key factors influencing demand predictions</p>
+                        <div class="card">
+                            <div class="card-body py-2">
+                                <h5 class="card-title">Holiday season</h5>
+                                <p class="card-text fs-6">95% confidence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
