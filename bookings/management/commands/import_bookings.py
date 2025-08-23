@@ -1,5 +1,7 @@
-from django.core.management.base import BaseCommand
 import csv
+import calendar
+
+from django.core.management.base import BaseCommand
 from datetime import datetime, date
 from bookings.models import Booking
 
@@ -27,8 +29,8 @@ class Command(BaseCommand):
             for row in reader:
                 row = [clean_value(col) for col in row]
 
-                year = int(row[2])
-                month_num = int(row[4])
+                year = int(row[3])
+                month_num = list(calendar.month_name).index(row[4])
                 day = int(row[6])
 
                 try:
@@ -37,18 +39,19 @@ class Command(BaseCommand):
                     full_arrival_date = None
 
                 booking = Booking(
-                    is_cancelled=bool(int(row[0])),
-                    lead_time=int(row[1]),
+                    hotel=row[0],
+                    is_cancelled=bool(int(row[1])),
+                    lead_time=int(row[2]),
                     arrival_date_year=year,
-                    arrival_date_month=row[3],
-                    arrival_date_month_number=month_num,
+                    arrival_date_month=row[4],
                     arrival_date_week_number=int(row[5]),
+                    arrival_date_month_number=month_num,
                     arrival_date_day_of_month=day,
                     arrival_date=full_arrival_date,
                     stays_in_weekend_nights=int(row[7]),
                     stays_in_week_nights=int(row[8]),
                     adults=int(row[9]),
-                    children=int(row[10]),
+                    children=int(row[10]) if row[10] is not None and row[10].isdigit() else None,
                     babies=int(row[11]),
                     meal=row[12],
                     country=row[13],
@@ -69,7 +72,7 @@ class Command(BaseCommand):
                     required_card_parking_spaces=int(row[28]),
                     total_of_special_requests=int(row[29]),
                     reservation_status=row[30],
-                    reservation_status_date=datetime.strptime(row[31], "%d/%m/%Y").date()
+                    reservation_status_date=datetime.strptime(row[31], "%Y-%m-%d").date()
                 )
                 bookings.append(booking)
 
