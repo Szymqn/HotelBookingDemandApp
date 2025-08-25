@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "bookings.apps.BookingsConfig",
     "analytics.apps.AnalyticsConfig",
     "user_settings.apps.UserSettingsConfig",
-    "django_tables2"
+    'bootstrap5',
+    "django_tables2",
 ]
 
 MIDDLEWARE = [
@@ -80,6 +81,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'HotelBookingDemandApp.wsgi.application'
+
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 
 
 # Database

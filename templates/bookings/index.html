@@ -1,6 +1,5 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
-
 {% extends 'base.html' %}
+{% load trending_tags %}
 {% load render_table from django_tables2 %}
 
 {% block title %}Bookings{% endblock %}
@@ -8,31 +7,55 @@
 {% block content %}
     <h1>Bookings</h1>
     <p>Manage and track all hotel reservations</p>
-    <div class="grid">
-        <div class="card">
-            <h3>Total Bookings</h3>
-            <div class="value">{{ total_bookings }}</div>
-            <div class="change">+12.5% this month</div>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-10">
+                <div class="row g-3">
+                    <div class="col-10 col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Bookings</h5>
+                                <p class="card-text">{{ total_bookings }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Avg. Stay of last month</h5>
+                                <p class="card-text">
+                                <span class="material-symbols-outlined">
+                                {{ change_of_stay_from_the_previous_month|trending_tag }}
+                                </span>
+                                {{ change_of_stay_from_the_previous_month }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10 col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Cancellation Rate of last month</h5>
+                                <p class="card-text">
+                                <span class="material-symbols-outlined">
+                                {{ change_of_cancellation_rate_from_the_previous_month|trending_tag }}
+                                </span>
+                                {{ change_of_cancellation_rate_from_the_previous_month }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Avg. Stay per month</h3>
-            <div class="value">{{ avg_stay_per_month }}</div>
-            <div class="change">nights per booking</div>
-        </div>
-        <div class="card">
-            <h3>Cancellation Rate per month</h3>
-            <div class="value">{{ avg_cancellation_rate }}%</div>
-            <div class="change">-1.2% from last month</div>
-        </div>
-    </div>
-
-    <div class="section-title"></div>
-
-    <div class="grid">
-        <div class="card">
-            <div class="data-container">
-                <div class="table-scroll">
-                    {% render_table table %}
+        <div class="row mb-4">
+            <div class="col-10">
+                <div class="card narrow-card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {% render_table table %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -5,20 +5,35 @@
 {% block content %}
     <h1>AI Insights</h1>
     <p>Explainable AI analysis of booking demand patterns and predictions</p>
-
-    <div class="grid">
-        <div class="card">
-            <h3>Feature Importance</h3>
-            <div class="description">Which factors most influence booking demand predictions</div>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Feature Importance</h5>
+                        <p class="card-text fs-6">Which factors most influence booking demand predictions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Prediction Breakdown</h5>
+                        <p class="card-text fs-6">How the AI build its demand forecast</p>
+                        <p class="card-text fs-6">[Insert demand forecast chart here]</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Prediction Breakdown</h3>
-            <div class="description">How the AI build its demand forecast</div>
-            <p>[Insert demand forecast chart here]</p>
-        </div>
-        <div class="card">
-            <h3>AI Decision Process</h3>
-            <div class="description">Step-by-step explanation of how the AI makes predictions</div>
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">AI Decision Process</h5>
+                        <p class="card-text fs-6">Step-by-step explanation of how the AI makes predictions</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

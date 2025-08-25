@@ -2,6 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+HOTEL_CHOICES = [
+    ("City Hotel", "City Hotel"),
+    ("Resort Hotel", "Resort Hotel"),
+]
+
 MONTH_CHOICES = [
     ("January", "January"),
     ("February", "February"),
@@ -62,6 +67,7 @@ RESERVATION_STATUS_CHOICES = [
 
 
 class Booking(models.Model):
+    hotel = models.CharField(max_length=20, choices=HOTEL_CHOICES)
     is_cancelled = models.BooleanField()
     lead_time = models.IntegerField()
     arrival_date_year = models.IntegerField()
@@ -73,26 +79,26 @@ class Booking(models.Model):
     stays_in_weekend_nights = models.IntegerField()
     stays_in_week_nights = models.IntegerField()
     adults = models.IntegerField()
-    children = models.IntegerField()
+    children = models.IntegerField(blank=True, null=True, default=0)
     babies = models.IntegerField()
-    meal = models.CharField(max_length=9, choices=MEAL_CHOICES)
-    country = models.CharField(max_length=5, blank=True, null=True)
-    market_segment = models.CharField(max_length=13, choices=MARKET_SEGMENT_CHOICES)
-    distribution_channel = models.CharField(max_length=9, choices=DISTRIBUTION_CHANNEL_CHOICES)
+    meal = models.CharField(max_length=20, choices=MEAL_CHOICES)
+    country = models.CharField(max_length=20, blank=True, null=True)
+    market_segment = models.CharField(max_length=20, choices=MARKET_SEGMENT_CHOICES)
+    distribution_channel = models.CharField(max_length=20, choices=DISTRIBUTION_CHANNEL_CHOICES)
     is_repeated_guest = models.BooleanField()
     previous_cancellations = models.IntegerField()
     previous_booking_not_canceled = models.IntegerField()
     reserved_room_type = models.CharField(max_length=1)
     assigned_room_type = models.CharField(max_length=1)
     booking_changes = models.IntegerField()
-    deposit_type = models.CharField(max_length=10, choices=DEPOSIT_TYPE_CHOICES)
+    deposit_type = models.CharField(max_length=20, choices=DEPOSIT_TYPE_CHOICES)
     agent = models.IntegerField(blank=True, null=True)
     company = models.IntegerField(blank=True, null=True)
     days_in_waiting_list = models.IntegerField()
-    customer_type = models.CharField(max_length=15, choices=CUSTOMER_TYPE_CHOICES)
+    customer_type = models.CharField(max_length=20, choices=CUSTOMER_TYPE_CHOICES)
     adr = models.FloatField()
     required_card_parking_spaces = models.IntegerField()
     total_of_special_requests = models.IntegerField()
-    reservation_status = models.CharField(max_length=9, choices=RESERVATION_STATUS_CHOICES)
+    reservation_status = models.CharField(max_length=20, choices=RESERVATION_STATUS_CHOICES)
     reservation_status_date = models.DateField()
     id = models.BigAutoField(primary_key=True)

@@ -1,43 +1,84 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
     <h1>Dashboard</h1>
-    <p>Overview of your hotel booking demand and AI insights</p>
-    <div class="grid">
-        <div class="card">
-            <h3>Total Bookings</h3>
-            <div class="value">2,834</div>
-            <div class="change">+12.5% this month</div>
+    <h6>Overview of your hotel booking demand and AI insights</h6>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Bookings</h5>
+                        <p class="card-text">{{ total_bookings }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg. ADR</h5>
+                        <p class="card-text">${{ avg_adr }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Avg. Room Occupy</h5>
+                        <p class="card-text">{{ avg_room_occupy }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-            <h3>Revenue</h3>
-            <div class="value">$124,560</div>
-            <div class="change">+8.3% growth</div>
-        </div>
-        <div class="card">
-            <h3>Occupancy Rate</h3>
-            <div class="value">76%</div>
-            <div class="change">+3.2% since last week</div>
-        </div>
-        <div class="card">
-            <h3>New Customers</h3>
-            <div class="value">143</div>
-            <div class="change">+5.9% increase</div>
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Hotel Demand Forecast</h3>
+                        <div id="demandChart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">AI Insights</h3>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="section-title">Demand Forecast & AI Insights</div>
-
-    <div class="grid">
-        <div class="card wide-card">
-            <h3>Hotel Demand Forecast</h3>
-            <p>[Insert demand forecast chart here]</p>
-        </div>
-        <div class="card">
-            <h3>AI Insights</h3>
-            <p></p>
-        </div>
-    </div>
+<script>
+    const labels = {{ chart_labels_json|safe }};
+    const seriesData = {{ chart_data_json|safe }};
+    const options = {
+        chart: { type: 'area', height: 350, toolbar: { show: false } },
+        series: [{ name: 'Bookings', data: seriesData }],
+        xaxis: {
+            categories: labels,
+            tickAmount: Math.min(labels.length, 12),
+            labels: {
+                rotate: -45,
+                trim: true
+            }
+        },
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth', width: 2 },
+        fill: {
+            type: 'gradient',
+            gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0, stops: [0, 100] }
+        },
+        grid: { borderColor: '#eee' },
+        yaxis: { labels: { formatter: v => Math.round(v) } },
+        tooltip: {
+            x: { formatter: (val) => val },
+            y: { formatter: v => v + ' bookings' }
+        },
+        colors: ['#0066ff']
+    };
+    new ApexCharts(document.querySelector("#demandChart"), options).render();
+</script>
 {% endblock %}
