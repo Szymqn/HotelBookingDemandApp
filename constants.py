@@ -1,3 +1,3 @@
 from datetime import datetime
 
-TEST_DATE = datetime.strptime("08/31/2017", "%m/%d/%Y")
+TEST_DATE = datetime.strptime("31/08/2017", "%d/%m/%Y")
