@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "bookings.apps.BookingsConfig",
     "analytics.apps.AnalyticsConfig",
     "user_settings.apps.UserSettingsConfig",
+    "users.apps.UsersConfig",
     'bootstrap5',
     "django_tables2",
 ]
@@ -83,6 +84,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'HotelBookingDemandApp.wsgi.application'
 
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
+
+# Authorization
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Database
@@ -126,6 +130,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
