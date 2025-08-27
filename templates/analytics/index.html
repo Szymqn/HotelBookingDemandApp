@@ -38,6 +38,30 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">SHAP summary plot</h5>
+                        <p class="card-text"></p>
+                        <div id="shapBoxPlot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">SHAP Local Explanation (Row)</h5>
+                        <p class="card-text small mb-1">
+                          Base: <span id="wfBase"></span> | Prediction: <span id="wfPred"></span> | Row: <span id="wfRow"></span>
+                        </p>
+                        <div id="shapWaterfallChart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <script>
     const labels = {{ chart_label_json|safe }};
@@ -71,5 +95,85 @@
         yaxis: { labels: { formatter: v => '$' + v } },
         colors: ['#0066ff']
     }).render();
+</script>
+
+<script>
+    const shapBoxData = {{ shap_box_json|safe }};
+    new ApexCharts(document.querySelector("#shapBoxPlot"), {
+        chart: { type: 'boxPlot', height: 450, toolbar: { show: true } },
+        series: [{ name: 'SHAP', data: shapBoxData }],
+        plotOptions: {
+            boxPlot: { colors: { upper: '#1E90FF', lower: '#87CEFA' } }
+        },
+        xaxis: { labels: { rotate: -30 } },
+        tooltip: {
+            y: {
+                formatter: v => v.toFixed(4)
+            }
+        }
+    }).render();
+</script>
+
+<script>
+  (function() {
+    const wf = {{ shap_waterfall_json|safe }};
+    document.getElementById('wfBase').textContent = wf.base_value;
+    document.getElementById('wfPred').textContent = wf.prediction;
+    document.getElementById('wfRow').textContent = wf.row_index;
+
+    const categories = wf.features.map(f => f.feature);
+    const shapData = wf.features.map(f => f.shap);
+    const colors = wf.features.map(f => '#1E90FF');
+
+    new ApexCharts(document.querySelector("#shapWaterfallChart"), {
+      chart: { type: 'bar', height: 500, toolbar: { show: true } },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          barHeight: '70%',
+          dataLabels: { position: 'right' }
+        }
+      },
+      series: [{ name: 'SHAP', data: shapData }],
+      xaxis: {
+        categories: categories,
+        title: { text: 'Contribution (model output units)' },
+        labels: { formatter: v => Number(v).toFixed(3) }
+      },
+      yaxis: {
+        labels: {
+          style: { fontSize: '12px' }
+        }
+      },
+      colors: colors,
+      tooltip: {
+        y: {
+          formatter: (val, opts) => {
+            const f = wf.features[opts.dataPointIndex];
+            return `SHAP: ${val.toFixed(4)} | Value: ${f.value}`;
+          }
+        }
+      },
+      annotations: {
+        xaxis: [
+          {
+            x: wf.base_value,
+            borderColor: '#888',
+            label: { text: 'Base', style: { background: '#888', color: '#fff' } }
+          },
+            {
+            x: wf.prediction,
+            borderColor: '#222',
+            label: { text: 'Prediction', style: { background: '#222', color: '#fff' } }
+          }
+        ]
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: (val) => val.toFixed(3),
+        style: { colors: ['#333'] }
+      }
+    }).render();
+  })();
 </script>
 {% endblock %}
