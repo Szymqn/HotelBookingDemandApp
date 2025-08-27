@@ -148,7 +148,7 @@ env.bak/
 venv.bak/
 
 # ML models (temp)
-ml_model/
+data/
 
 # Spyder project settings
 .spyderproject

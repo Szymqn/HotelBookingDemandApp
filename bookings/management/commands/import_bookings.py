@@ -1,3 +1,5 @@
+# python .\manage.py import_bookings data/hotel_bookings.csv
+
 import csv
 import calendar
 
