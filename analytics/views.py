@@ -37,6 +37,13 @@ def _load_artifacts():
         explainer = shap.TreeExplainer(MODEL)
         sv_raw = explainer.shap_values(X)
         ev = explainer.expected_value
+        # with open('ml_model/stacking_model.pkl', 'rb') as f:
+        #     MODEL = pickle.load(f)
+        # FEATURE_ORDER = df.columns.tolist()
+        # X = df[FEATURE_ORDER]
+        # explainer = shap.Explainer(MODEL.predict_proba, X)
+        # sv_raw = explainer(X)
+        # ev = explainer.expected_value
         if isinstance(sv_raw, list):
             SHAP_MATRIX = sv_raw[0]
             EXPECTED_VALUE = float(ev[0] if isinstance(ev, (list, np.ndarray)) else ev)
