@@ -149,6 +149,7 @@ venv.bak/
 
 # ML models (temp)
 data/
+ml_model/stacking_model.pkl
 
 # Spyder project settings
 .spyderproject
