@@ -33,7 +33,7 @@ class CitySearchAPIView(APIView):
             max_results=max_results
         )
 
-        if "error" is results:
+        if "error" == results:
             return Response(results, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = CitySearchResultSerializer(results, many=True)
         return Response(serializer.data)
