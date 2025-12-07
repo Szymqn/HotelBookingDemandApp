@@ -25,4 +25,7 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('demand_forecast/', include('demand_forecast.urls')),
     path('user_settings/', include('user_settings.urls')),
+    path('users/', include('users.urls')),
+    path('properties/', include('properties.urls')),
+    path('api/', include('api.urls')),
 ]
