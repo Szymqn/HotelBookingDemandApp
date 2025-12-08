@@ -20,6 +20,17 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BASE_PATH = os.environ.get('BASE_PATH', '')
+
+if BASE_PATH:
+    FORCE_SCRIPT_NAME = BASE_PATH
+
+    STATIC_URL = f'{BASE_PATH}/static/'
+    MEDIA_URL = f'{BASE_PATH}/media/'
+else:
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -34,8 +45,10 @@ AMADEUS_API_SECRET = os.environ.get('AMADEUS_API_SECRET', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+# Add this to allow POST requests from your HTTPS domain
+CSRF_TRUSTED_ORIGINS = ['https://projekty.uco.uwb.edu.pl']
 
 # Application definition
 
@@ -140,8 +153,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
