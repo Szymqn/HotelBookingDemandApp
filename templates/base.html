@@ -1,77 +1,201 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Default Title{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BookWise AI{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        .sidebar { width: 260px; min-width: 260px; transition: all 0.3s; }
+        .nav-link { color: var(--bs-body-color); font-weight: 500; display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: background-color 0.2s, color 0.2s; }
+        .nav-link:hover { background-color: var(--bs-tertiary-bg); color: var(--bs-emphasis-color); }
+        .nav-link.active { background-color: var(--bs-primary-bg-subtle); color: var(--bs-primary); }
+        .material-symbols-outlined { font-size: 1.25rem; }
+        .navbar { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .card { border: 1px solid var(--bs-border-color-translucent); box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); border-radius: 0.75rem; }
+        .card-header { background-color: transparent; border-bottom: 1px solid var(--bs-border-color-translucent); padding: 1.25rem 1.5rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        
+        [data-bs-theme="dark"] .navbar { box-shadow: 0 1px 2px 0 rgba(255, 255, 255, 0.05); }
+        body, .card, .navbar, .sidebar { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
+        
+        /* Table Styling */
+        .table { margin-bottom: 0; }
+        .table > :not(caption) > * > * { padding: 0.85rem 1rem; border-bottom-color: var(--bs-border-color-translucent); }
+        .table > thead > tr > th { font-weight: 600; font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--bs-secondary-color); border-bottom: 2px solid var(--bs-border-color-translucent); background-color: var(--bs-tertiary-bg); padding-top: 0.85rem; padding-bottom: 0.85rem; }
+        .table > thead > tr > th a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; }
+        .table > thead > tr > th a:hover { color: var(--bs-body-color); }
+        .table-container > nav > .pagination { margin-top: 1rem; margin-bottom: 0; justify-content: flex-end; }
+    </style>
+    <script>
+        const getPreferredTheme = () => {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                return storedTheme;
+            }
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        };
+        const setTheme = theme => {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            if (window.Apex) {
+                window.Apex.theme = { mode: theme };
+                window.Apex.chart = { background: 'transparent' };
+            }
+        };
+        setTheme(getPreferredTheme());
+        
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(getPreferredTheme());
+                updateThemeIcon(getPreferredTheme());
+            }
+        });
+
+        const updateThemeIcon = (theme) => {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? 'dark_mode' : 'light_mode';
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            updateThemeIcon(currentTheme);
+
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const newTheme = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('theme', newTheme);
+                    setTheme(newTheme);
+                    updateThemeIcon(newTheme);
+                    // Dispatch a custom event so other scripts (like charts) know the theme changed
+                    window.dispatchEvent(new Event('themeChanged'));
+                });
+            }
+            
+            // Listen for theme changes to update charts
+            window.addEventListener('themeChanged', () => {
+                 setTimeout(() => window.location.reload(), 50);
+            });
+        });
+    </script>
 </head>
-<body class="bg-light">
+<body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<div class="container-fluid">
-    <div class="row flex-nowrap">
-        <nav class="col-auto sidebar bg-white border-end min-vh-100 d-flex flex-column p-3">
-            <h5 class="mb-4">BookWise AI</h5>
-            <ul class="nav nav-pills flex-column gap-1">
+<script>
+    // Ensure ApexCharts instances default to the active theme mode
+    window.Apex = { 
+        theme: { mode: getPreferredTheme() },
+        chart: { background: 'transparent' }
+    };
+</script>
+
+<div class="container-fluid p-0">
+    <div class="d-flex flex-nowrap min-vh-100">
+        <!-- Sidebar -->
+        <nav class="sidebar bg-body border-end d-flex flex-column p-3 d-none d-md-flex">
+            <a href="{% url 'dashboard' %}" class="d-flex align-items-center gap-2 mb-4 text-decoration-none px-2 mt-2 text-body" aria-label="BookWise AI Home">
+                <span class="material-symbols-outlined text-primary fs-3" aria-hidden="true">hotel_class</span>
+                <span class="fs-5 fw-bold text-primary">BookWise AI</span>
+            </a>
+            
+            <ul class="nav nav-pills flex-column gap-2 mb-auto" role="list">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">dashboard</span> Dashboard
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'demand_forecast' %}active{% endif %}" href="{% url 'demand_forecast' %}">Demand Forecast</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'demand_forecast' %}active{% endif %}" href="{% url 'demand_forecast' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">trending_up</span> Demand Forecast
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'ai_insights' %}active{% endif %}" href="{% url 'ai_insights' %}">AI Insights</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'ai_insights' %}active{% endif %}" href="{% url 'ai_insights' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">lightbulb</span> AI Insights
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="{% url 'bookings' %}">Bookings</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="{% url 'bookings' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">book_online</span> Bookings
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'properties' %}active{% endif %}" href="{% url 'properties' %}">Properties</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}" href="{% url 'analytics' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">analytics</span> Analytics
+                    </a>
                 </li>
+            </ul>
+            <hr>
+            <ul class="nav nav-pills flex-column gap-2" role="list">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}" href="{% url 'analytics' %}">Analytics</a>
-                </li>
-                <li class="nav-item mt-auto">
-                    <a class="nav-link {% if request.resolver_match.url_name == 'user_settings' %}active{% endif %}" href="{% url 'user_settings' %}">Settings</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'user_settings' %}active{% endif %}" href="{% url 'user_settings' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">settings</span> Settings
+                    </a>
                 </li>
             </ul>
         </nav>
-        <main class="col py-4 px-4">
-            <nav class="navbar navbar-expand bg-white border rounded-3 px-3 mb-4">
-                <div class="container-fluid p-0">
-                    <span class="navbar-brand fw-semibold d-none d-md-inline">Overview</span>
-                    <form class="d-flex flex-grow-1 ms-md-3 me-3" role="search" method="get" action="">
+
+        <!-- Main Content -->
+        <main class="flex-grow-1 d-flex flex-column overflow-hidden" role="main">
+            <!-- Navbar -->
+            <header class="navbar navbar-expand bg-body px-4 py-3 border-bottom">
+                <div class="d-flex align-items-center flex-grow-1">
+                    <h5 class="mb-0 fw-semibold text-body me-auto d-none d-lg-block">
+                        {% block header_title %}Overview{% endblock %}
+                    </h5>
+                    
+                    <form class="d-flex mx-lg-4 flex-grow-1 flex-lg-grow-0" style="max-width: 400px;" role="search" method="get" action="">
                         <div class="input-group">
-                            <span class="input-group-text bg-transparent border-end-0">
-                                <span class="material-symbols-outlined fs-5">search</span>
+                            <span class="input-group-text bg-body-tertiary border-0 text-muted rounded-start-pill ps-3" id="search-icon">
+                                <span class="material-symbols-outlined fs-5" aria-hidden="true">search</span>
                             </span>
-                            <input name="q" class="form-control border-start-0" type="search" placeholder="Search..." aria-label="Search">
+                            <input name="q" class="form-control bg-body-tertiary border-0 rounded-end-pill py-2" type="search" placeholder="Search across dashboard..." aria-label="Search" aria-describedby="search-icon">
                         </div>
                     </form>
-                    <div class="d-flex align-items-center gap-3">
+
+                    <div class="d-flex align-items-center gap-3 ms-3">
+                        <button id="themeToggleBtn" class="btn border-0 rounded-circle p-2 d-flex align-items-center justify-content-center" aria-label="Toggle theme" style="background-color: var(--bs-tertiary-bg);">
+                            <span class="material-symbols-outlined fs-5 text-body" aria-hidden="true" id="themeIcon">light_mode</span>
+                        </button>
+
                         {% if request.user.is_authenticated %}
                         <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="fw-medium">{{ request.user.get_full_name|default:request.user.username }}</span>
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle text-body gap-2" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User profile menu">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px;" aria-hidden="true">
+                                    {{ request.user.first_name|default:request.user.username|make_list|first|upper }}
+                                </div>
+                                <span class="fw-medium d-none d-sm-inline">{{ request.user.get_full_name|default:request.user.username }}</span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow">
-                                <li class="px-3 py-2 small text-muted">{{ request.user.email }}</li>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                <li class="px-3 py-2">
+                                    <div class="fw-bold">{{ request.user.get_full_name|default:request.user.username }}</div>
+                                    <div class="small text-muted">{{ request.user.email }}</div>
+                                </li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'user_settings' %}">Settings</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'user_settings' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">person</span> Profile</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'user_settings' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">settings</span> Settings</a></li>
                                 {% if request.resolver_match.url_name != 'logout' %}
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="{% url 'logout' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">logout</span> Logout</a></li>
                                 {% endif %}
                             </ul>
                         </div>
                         {% else %}
-                            <a class="btn btn-outline-primary btn-sm" href="{% url 'login' %}">Sign in</a>
+                            <a class="btn btn-primary px-4 rounded-pill" href="{% url 'login' %}">Sign in</a>
                         {% endif %}
                     </div>
                 </div>
-            </nav>
-            {% block content %}{% endblock %}
+            </header>
+
+            <div class="p-4 overflow-auto bg-body-tertiary flex-grow-1">
+                {% block content %}{% endblock %}
+            </div>
         </main>
     </div>
 </div>
