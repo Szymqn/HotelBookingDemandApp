@@ -2,24 +2,40 @@ services:
   web:
     build: .
     container_name: web
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/app
+    # Use gunicorn instead of manage.py runserver.
+    # --workers 1 limits memory heavily by only having one app instance.
+    # --threads 2 provides basic concurrency without taking much memory.
+    # --max-requests 1000 automatically restarts workers to clear any memory leaks (common with ML apps).
+    command: gunicorn HotelBookingDemandApp.wsgi:application --workers 1 --threads 2 --bind 0.0.0.0:8000 --max-requests 1000 --max-requests-jitter 50
+    # Remove volume mount to avoid filesystem sync overhead in production and to use the built-in code.
     env_file: .env
     environment:
       - BASE_PATH=/sk84647
     healthcheck:
-      test: ["CMD", "curl", "http://127.0.0.1:8000"]
+      test: ["CMD", "curl", "http://127.0.0.1:8000/sk84647/"]
       interval: 30s
       timeout: 10s
       retries: 3
+    deploy:
+      resources:
+        limits:
+          # Limit container memory. Depending on ML model size, adjust this if it gets OOM killed.
+          memory: 1024M
 
   nginx:
     image: nginx:alpine
     depends_on:
       - web
     volumes:
-      - .:/app
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro  # Mount the config file
+      # Use a named volume or copy static files if needed, but for now we mount the local config.
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles
     ports:
       - "80:80"
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+volumes:
+  static_volume:
