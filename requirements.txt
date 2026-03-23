@@ -8,6 +8,7 @@ django-bootstrap-v5==1.0.11
 django-tables2==2.8.0
 djangorestframework==3.16.1
 dotenv==0.9.9
+gunicorn==25.1.0
 joblib==1.5.3
 llvmlite==0.43.0
 numba==0.60.0
