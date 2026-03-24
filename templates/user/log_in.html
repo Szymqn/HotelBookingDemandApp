@@ -8,7 +8,7 @@
     <div class="container">
         <div class="auth-card login-card">
             <h2>Login</h2>
-            <form method="post" action="{% url 'login' %}">
+            <form method="post" action="{% url 'log_in' %}">
                 {% csrf_token %}
 
                 {% if messages %}
@@ -33,7 +33,7 @@
             </form>
 
             <div class="auth-link">
-                <a href="{% url 'sign_in' %}">Don't have an account? Sign In Here</a>
+                <a href="{% url 'sign_up' %}">Don't have an account? Sign Up Here</a>
             </div>
         </div>
     </div>

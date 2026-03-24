@@ -4,28 +4,28 @@ from django.contrib.auth import authenticate, login, logout
 from .models import CustomUser
 
 
-def login_page(request):
+def log_in_page(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         if not CustomUser.objects.filter(username=username).exists():
             messages.error(request, 'Invalid Username')
-            return redirect('login')
+            return redirect('log_in')
 
         user = authenticate(username=username, password=password)
 
         if user is None:
             messages.error(request, "Invalid Password")
-            return redirect('login')
+            return redirect('log_in')
         else:
             login(request, user)
             return redirect('dashboard')
 
-    return render(request, 'user/login.html')
+    return render(request, 'user/log_in.html')
 
 
-def sign_in_page(request):
+def sign_up_page(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -36,7 +36,7 @@ def sign_in_page(request):
 
         if user.exists():
             messages.info(request, "Username already taken!")
-            return redirect('register')
+            return redirect('sign_up')
 
         user = CustomUser.objects.create_user(
             first_name=first_name,
@@ -53,9 +53,9 @@ def sign_in_page(request):
             messages.info(request, "Account created and logged in successfully!")
             return redirect('dashboard')
 
-    return render(request, 'user/sign_in.html')
+    return render(request, 'user/sign_up.html')
 
 
-def logout_page(request):
+def log_out_page(request):
     logout(request)
     return redirect('dashboard')

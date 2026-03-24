@@ -180,14 +180,15 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'user_settings' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">person</span> Profile</a></li>
                                 <li><a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'user_settings' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">settings</span> Settings</a></li>
-                                {% if request.resolver_match.url_name != 'logout' %}
+                                {% if request.resolver_match.url_name != 'log_out' %}
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="{% url 'logout' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">logout</span> Logout</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-2 text-danger" href="{% url 'log_out' %}"><span class="material-symbols-outlined fs-6" aria-hidden="true">logout</span> Logout</a></li>
                                 {% endif %}
                             </ul>
                         </div>
                         {% else %}
-                            <a class="btn btn-primary px-4 rounded-pill" href="{% url 'login' %}">Sign in</a>
+                            <a class="btn btn-primary px-4 rounded-pill" href="{% url 'sign_up' %}">Sign up</a>
+                            <a class="btn btn-primary px-4 rounded-pill" href="{% url 'log_in' %}">Log In</a>
                         {% endif %}
                     </div>
                 </div>
