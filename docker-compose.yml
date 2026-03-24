@@ -2,15 +2,14 @@ services:
   web:
     build: .
     container_name: web
-    # Use gunicorn instead of manage.py runserver.
-    # --workers 1 limits memory heavily by only having one app instance.
-    # --threads 2 provides basic concurrency without taking much memory.
-    # --max-requests 1000 automatically restarts workers to clear any memory leaks (common with ML apps).
-    command: gunicorn HotelBookingDemandApp.wsgi:application --workers 1 --threads 2 --bind 0.0.0.0:8000 --max-requests 1000 --max-requests-jitter 50
+    # Run collectstatic on startup to populate the shared volume, then start gunicorn
+    command: sh -c "python manage.py collectstatic --noinput && gunicorn HotelBookingDemandApp.wsgi:application --workers 1 --threads 2 --bind 0.0.0.0:8000 --max-requests 1000 --max-requests-jitter 50"
     # Remove volume mount to avoid filesystem sync overhead in production and to use the built-in code.
     env_file: .env
     environment:
       - BASE_PATH=/sk84647
+    volumes:
+      - static_volume:/app/staticfiles
     healthcheck:
       test: ["CMD", "curl", "http://127.0.0.1:8000/sk84647/"]
       interval: 30s
