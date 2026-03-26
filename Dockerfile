@@ -15,6 +15,7 @@ WORKDIR /app
 # build/install the wheels, and then remove the build tools to keep the image small.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
