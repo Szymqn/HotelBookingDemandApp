@@ -1,59 +1,40 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .models import CustomUser
+from .forms import LoginForm, SignUpForm
 
 
 def log_in_page(request):
     if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('dashboard')
+    else:
+        form = LoginForm()
 
-        if not CustomUser.objects.filter(username=username).exists():
-            messages.error(request, 'Invalid Username')
-            return redirect('log_in')
-
-        user = authenticate(username=username, password=password)
-
-        if user is None:
-            messages.error(request, "Invalid Password")
-            return redirect('log_in')
-        else:
-            login(request, user)
-            return redirect('dashboard')
-
-    return render(request, 'user/log_in.html')
+    return render(request, 'auth/log_in.html', {'form': form})
 
 
 def sign_up_page(request):
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user = authenticate(username=user.username, password=form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Account created and logged in successfully!")
+                return redirect('dashboard')
+    else:
+        form = SignUpForm()
 
-        user = CustomUser.objects.filter(username=username)
+    return render(request, 'auth/sign_up.html', {'form': form})
 
-        if user.exists():
-            messages.info(request, "Username already taken!")
-            return redirect('sign_up')
-
-        user = CustomUser.objects.create_user(
-            first_name=first_name,
-            last_name=last_name,
-            username=username
-        )
-
-        user.set_password(password)
-        user.save()
-
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.info(request, "Account created and logged in successfully!")
-            return redirect('dashboard')
-
-    return render(request, 'user/sign_up.html')
 
 
 def log_out_page(request):

@@ -56,7 +56,7 @@
                 <p class="text-muted small mt-1 mb-0">Monthly revenue and booking volume analysis</p>
             </div>
             <div class="card-body">
-                <div id="adrTrendChart" style="min-height: 350px;"></div>
+                <div id="adrTrendChart" class="chart-min-350"></div>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@
                 </h5>
             </div>
             <div class="card-body">
-                <div id="shapBoxPlot" style="min-height: 400px;"></div>
+                <div id="shapBoxPlot" class="chart-min-400"></div>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
                 </p>
             </div>
             <div class="card-body">
-                <div id="shapWaterfallChart" style="min-height: 400px;"></div>
+                <div id="shapWaterfallChart" class="chart-min-400"></div>
             </div>
         </div>
     </div>
@@ -99,70 +99,22 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Shared chart font
     const fontFamily = "'Segoe UI', system-ui, -apple-system, sans-serif";
-    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    const isDark = window.BookWiseCharts.isDarkTheme();
 
     // ADR Trend Chart
     const labels = {{ chart_label_json|safe|default:"[]" }};
     const adrSeries = {{ chart_adr_json|safe|default:"[]" }};
 
-    new ApexCharts(document.querySelector("#adrTrendChart"), {
-        chart: {
-            type: 'area',
-            height: 350,
-            fontFamily: fontFamily,
-            toolbar: { show: false }
-        },
-        series: [{ name: 'Avg ADR', data: adrSeries }],
-        xaxis: {
-            categories: labels,
-            tickAmount: Math.min(labels.length, 12),
-            labels: {
-                style: { colors: isDark ? '#9ca3af' : '#6b7280', fontSize: '12px' },
-                rotate: -45,
-                trim: true
-            },
-            axisBorder: { show: false },
-            axisTicks: { show: false }
-        },
-        yaxis: {
-            labels: {
-                style: { colors: isDark ? '#9ca3af' : '#6b7280', fontSize: '12px' },
-                formatter: v => '$' + v
-            }
-        },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'smooth', width: 3, colors: ['#10b981'] },
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.25,
-                opacityTo: 0.05,
-                stops: [0, 90, 100],
-                colorStops: [
-                    { offset: 0, color: '#10b981', opacity: 0.25 },
-                    { offset: 100, color: '#10b981', opacity: 0.05 }
-                ]
-            }
-        },
-        grid: {
-            borderColor: isDark ? '#374151' : '#f3f4f6',
-            strokeDashArray: 4,
-        },
-        tooltip: {
-            theme: isDark ? 'dark' : 'light',
-            y: { formatter: v => '$' + v.toFixed(2) }
-        },
-        markers: {
-            size: 0,
-            colors: [isDark ? '#1f2937' : '#fff'],
-            strokeColors: '#10b981',
-            strokeWidth: 2,
-            hover: { size: 5 }
-        }
-    }).render();
+    new ApexCharts(document.querySelector("#adrTrendChart"), window.BookWiseCharts.areaOptions({
+        labels: labels,
+        seriesName: 'Avg ADR',
+        seriesData: adrSeries,
+        color: '#10b981',
+        strokeWidth: 3,
+        yLabelFormatter: v => '$' + v,
+        tooltipYFormatter: v => '$' + v.toFixed(2)
+    })).render();
 
     // SHAP Box Plot
     const shapBoxData = {{ shap_box_json|safe|default:"[]" }};
@@ -174,15 +126,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 boxPlot: { colors: { upper: '#4338ca', lower: '#818cf8' } }
             },
             xaxis: { 
-                labels: { style: { colors: isDark ? '#9ca3af' : '#6b7280' }, rotate: -30 } 
+                labels: { style: window.BookWiseCharts.axisLabelStyle(), rotate: -30 }
             },
             yaxis: {
-                labels: { style: { colors: isDark ? '#9ca3af' : '#6b7280' } }
+                labels: { style: window.BookWiseCharts.axisLabelStyle() }
             },
-            grid: {
-                borderColor: isDark ? '#374151' : '#f3f4f6',
-                strokeDashArray: 4,
-            },
+            grid: window.BookWiseCharts.gridOptions(),
             tooltip: { theme: isDark ? 'dark' : 'light', y: { formatter: v => v.toFixed(4) } }
         }).render();
     }
@@ -218,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 labels: { style: { colors: '#4b5563', fontSize: '12px', fontWeight: 500 } }
             },
             colors: colors,
-            grid: { borderColor: isDark ? '#374151' : '#f3f4f6', strokeDashArray: 4 },
+            grid: window.BookWiseCharts.gridOptions(),
             tooltip: {
                 theme: isDark ? 'dark' : 'light',
                 y: {

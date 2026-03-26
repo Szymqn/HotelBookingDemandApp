@@ -67,7 +67,7 @@ INSTALLED_APPS = [
     'user_settings.apps.UserSettingsConfig',
     'users.apps.UsersConfig',
     'api.apps.ApiConfig',
-    'bootstrap5',
+    'django_bootstrap5',
     'django_tables2',
     'rest_framework',
 ]
@@ -164,3 +164,20 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+BOOTSTRAP5 = {
+    'css_url': {
+        'url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css',
+        'integrity': 'sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr',
+        'crossorigin': 'anonymous',
+    },
+    'javascript_url': {
+        'url': 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js',
+        'integrity': 'sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q',
+        'crossorigin': 'anonymous',
+    },
+    'alert_settings': {
+        'include_media': False,
+    },
+}
+

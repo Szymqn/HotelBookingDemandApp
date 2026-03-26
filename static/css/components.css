@@ -1,0 +1,64 @@
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-form-max {
+  max-width: 400px;
+}
+
+.btn-theme-toggle {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.avatar-lg {
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+}
+
+.icon-14 {
+  font-size: 14px !important;
+}
+
+.chart-min-200 {
+  min-height: 200px;
+}
+
+.chart-min-350 {
+  min-height: 350px;
+}
+
+.chart-min-400 {
+  min-height: 400px;
+}
+
+.progress-thin {
+  height: 8px;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+.w-15 {
+  width: 15%;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-5 {
+  width: 5%;
+}
+

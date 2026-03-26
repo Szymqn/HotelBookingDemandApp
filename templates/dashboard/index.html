@@ -22,7 +22,7 @@
                         <p class="text-muted fw-medium mb-1">Total Bookings</p>
                         <h3 class="fw-bold mb-2">{{ total_bookings }}</h3>
                         <span class="badge bg-success-subtle text-success rounded-pill fw-medium px-2 py-1">
-                            <span class="material-symbols-outlined fs-6 align-middle" style="font-size: 14px;" aria-hidden="true">trending_up</span> +12.5%
+                            <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_up</span> +12.5%
                         </span>
                         <span class="text-muted small ms-1">vs last month</span>
                     </div>
@@ -43,7 +43,7 @@
                         <p class="text-muted fw-medium mb-1">Average ADR</p>
                         <h3 class="fw-bold mb-2">${{ avg_adr }}</h3>
                         <span class="badge bg-success-subtle text-success rounded-pill fw-medium px-2 py-1">
-                            <span class="material-symbols-outlined fs-6 align-middle" style="font-size: 14px;" aria-hidden="true">trending_up</span> +5.2%
+                            <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_up</span> +5.2%
                         </span>
                         <span class="text-muted small ms-1">vs last month</span>
                     </div>
@@ -64,7 +64,7 @@
                         <p class="text-muted fw-medium mb-1">Avg. Occupancy Rate</p>
                         <h3 class="fw-bold mb-2">{{ avg_room_occupy|default:"--" }}%</h3>
                         <span class="badge bg-danger-subtle text-danger rounded-pill fw-medium px-2 py-1">
-                            <span class="material-symbols-outlined fs-6 align-middle" style="font-size: 14px;" aria-hidden="true">trending_down</span> -2.1%
+                            <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_down</span> -2.1%
                         </span>
                         <span class="text-muted small ms-1">vs last month</span>
                     </div>
@@ -85,7 +85,7 @@
                 <h5 class="card-title fw-bold mb-0">Demand Forecast</h5>
             </div>
             <div class="card-body">
-                <div id="demandChart" class="w-100" style="min-height: 350px;"></div>
+                <div id="demandChart" class="w-100 chart-min-350"></div>
             </div>
         </div>
     </div>
@@ -135,67 +135,17 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const labels = {{ chart_labels_json|safe|default:"[]" }};
         const seriesData = {{ chart_data_json|safe|default:"[]" }};
-        const options = {
-            chart: {
-                type: 'area',
-                height: 350,
-                fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif",
-                toolbar: { show: false }
-            },
-            series: [{ name: 'Bookings', data: seriesData }],
-            xaxis: {
-                categories: labels,
-                tickAmount: Math.min(labels.length, 12),
-                labels: {
-                    style: { colors: isDark ? '#9ca3af' : '#6b7280', fontSize: '12px' },
-                    rotate: -45,
-                    trim: true
-                },
-                axisBorder: { show: false },
-                axisTicks: { show: false }
-            },
-            yaxis: {
-                labels: {
-                    style: { colors: isDark ? '#9ca3af' : '#6b7280', fontSize: '12px' },
-                    formatter: v => Math.round(v)
-                }
-            },
-            dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 2, colors: ['#4338ca'] },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.25,
-                    opacityTo: 0.05,
-                    stops: [0, 90, 100],
-                    colorStops: [
-                        { offset: 0, color: '#4338ca', opacity: 0.25 },
-                        { offset: 100, color: '#4338ca', opacity: 0.05 }
-                    ]
-                }
-            },
-            grid: {
-                borderColor: isDark ? '#374151' : '#f3f4f6',
-                strokeDashArray: 4,
-                yaxis: { lines: { show: true } }
-            },
-            tooltip: {
-                theme: isDark ? 'dark' : 'light',
-                x: { formatter: (val) => val },
-                y: { formatter: v => v + ' bookings' }
-            },
-            markers: {
-                size: 0,
-                colors: [isDark ? '#1f2937' : '#fff'],
-                strokeColors: '#4338ca',
-                strokeWidth: 2,
-                hover: { size: 5 }
-            }
-        };
+        const options = window.BookWiseCharts.areaOptions({
+            labels: labels,
+            seriesName: 'Bookings',
+            seriesData: seriesData,
+            color: '#4338ca',
+            yLabelFormatter: v => Math.round(v),
+            tooltipYFormatter: v => v + ' bookings',
+            gridExtras: { yaxis: { lines: { show: true } } }
+        });
         const chartElement = document.querySelector("#demandChart");
         if(chartElement) {
             new ApexCharts(chartElement, options).render();

@@ -1,0 +1,18 @@
+{% extends 'auth/base_auth.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}Sign Up - BookWise AI{% endblock %}
+{% block auth_title %}Create Account{% endblock %}
+{% block auth_subtitle %}Sign up to get started with hotel demand forecasting{% endblock %}
+
+{% block auth_form %}
+<form method="post" action="{% url 'sign_up' %}">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary w-100 fw-semibold">Create Account</button>
+</form>
+{% endblock %}
+
+{% block auth_footer %}
+Already have an account? <a href="{% url 'log_in' %}">Sign in here</a>
+{% endblock %}

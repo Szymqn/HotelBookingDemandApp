@@ -74,7 +74,7 @@
                 <h5 class="card-title fw-bold mb-0">Annual Demand Forecast</h5>
             </div>
             <div class="card-body">
-                <div id="demandChart" class="w-100" style="min-height: 350px;"></div>
+                <div id="demandChart" class="w-100 chart-min-350"></div>
             </div>
         </div>
     </div>
@@ -123,67 +123,17 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         const labels = {{ chart_labels_json|safe|default:"[]" }};
         const seriesData = {{ chart_data_json|safe|default:"[]" }};
-        const options = {
-            chart: {
-                type: 'area',
-                height: 350,
-                fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif",
-                toolbar: { show: false }
-            },
-            series: [{ name: 'Predicted Bookings', data: seriesData }],
-            xaxis: {
-                categories: labels,
-                tickAmount: Math.min(labels.length, 12),
-                labels: {
-                    style: { colors: isDark ? '#9ca3af' : '#6b7280', fontSize: '12px' },
-                    rotate: -45,
-                    trim: true
-                },
-                axisBorder: { show: false },
-                axisTicks: { show: false }
-            },
-            yaxis: {
-                labels: {
-                    style: { colors: isDark ? '#9ca3af' : '#6b7280', fontSize: '12px' },
-                    formatter: v => Math.round(v)
-                }
-            },
-            dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 2, colors: ['#0ea5e9'] },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.25,
-                    opacityTo: 0.05,
-                    stops: [0, 90, 100],
-                    colorStops: [
-                        { offset: 0, color: '#0ea5e9', opacity: 0.25 },
-                        { offset: 100, color: '#0ea5e9', opacity: 0.05 }
-                    ]
-                }
-            },
-            grid: {
-                borderColor: isDark ? '#374151' : '#f3f4f6',
-                strokeDashArray: 4,
-                yaxis: { lines: { show: true } }
-            },
-            tooltip: {
-                theme: isDark ? 'dark' : 'light',
-                x: { formatter: (val) => val },
-                y: { formatter: v => v + ' bookings' }
-            },
-            markers: {
-                size: 0,
-                colors: [isDark ? '#1f2937' : '#fff'],
-                strokeColors: '#0ea5e9',
-                strokeWidth: 2,
-                hover: { size: 5 }
-            }
-        };
+        const options = window.BookWiseCharts.areaOptions({
+            labels: labels,
+            seriesName: 'Predicted Bookings',
+            seriesData: seriesData,
+            color: '#0ea5e9',
+            yLabelFormatter: v => Math.round(v),
+            tooltipYFormatter: v => v + ' bookings',
+            gridExtras: { yaxis: { lines: { show: true } } }
+        });
         const chartElement = document.querySelector("#demandChart");
         if(chartElement) {
             new ApexCharts(chartElement, options).render();
