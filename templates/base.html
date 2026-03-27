@@ -67,14 +67,14 @@
         </div>
     </div>
 
-    <div class="d-flex flex-nowrap min-vh-100">
+    <div class="d-flex flex-nowrap vh-100">
         <nav class="sidebar bg-body border-end d-flex flex-column p-3 d-none d-md-flex">
             <a href="{% url 'dashboard' %}" class="d-flex align-items-center gap-2 mb-4 text-decoration-none px-2 mt-2 text-body" aria-label="BookWise AI Home">
                 <span class="material-symbols-outlined text-primary fs-3" aria-hidden="true">hotel_class</span>
                 <span class="fs-5 fw-bold text-primary">BookWise AI</span>
             </a>
             
-            <ul class="nav nav-pills flex-column gap-2 mb-auto" role="list">
+            <ul class="nav nav-pills flex-column gap-2 mb-auto overflow-y-auto" role="list">
                 <li class="nav-item">
                     <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
                         <span class="material-symbols-outlined" aria-hidden="true">dashboard</span> Dashboard
