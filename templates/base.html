@@ -19,6 +19,54 @@
 <script src="{% static 'js/charts.js' %}"></script>
 
 <div class="container-fluid p-0">
+    <!-- Mobile Sidebar Offcanvas -->
+    <div class="offcanvas offcanvas-start bg-body d-md-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title d-flex align-items-center gap-2" id="mobileSidebarLabel">
+                <span class="material-symbols-outlined text-primary fs-3" aria-hidden="true">hotel_class</span>
+                <span class="fs-5 fw-bold text-primary">BookWise AI</span>
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-3">
+            <ul class="nav nav-pills flex-column gap-2 mb-auto" role="list">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">dashboard</span> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'demand_forecast' %}active{% endif %}" href="{% url 'demand_forecast' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">trending_up</span> Demand Forecast
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'ai_insights' %}active{% endif %}" href="{% url 'ai_insights' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">lightbulb</span> AI Insights
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}" href="{% url 'bookings' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">book_online</span> Bookings
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'analytics' %}active{% endif %}" href="{% url 'analytics' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">analytics</span> Analytics
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <ul class="nav nav-pills flex-column gap-2" role="list">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'user_settings' %}active{% endif %}" href="{% url 'user_settings' %}">
+                        <span class="material-symbols-outlined" aria-hidden="true">settings</span> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <div class="d-flex flex-nowrap min-vh-100">
         <!-- Sidebar -->
         <nav class="sidebar bg-body border-end d-flex flex-column p-3 d-none d-md-flex">
@@ -69,18 +117,12 @@
             <!-- Navbar -->
             <header class="navbar navbar-expand bg-body px-4 py-3 border-bottom">
                 <div class="d-flex align-items-center flex-grow-1">
+                    <button class="btn btn-link text-body p-0 me-3 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar" aria-label="Open menu">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
                     <h5 class="mb-0 fw-semibold text-body me-auto d-none d-lg-block">
                         {% block header_title %}Overview{% endblock %}
                     </h5>
-                    
-                    <form class="d-flex mx-lg-4 flex-grow-1 flex-lg-grow-0 search-form-max" role="search" method="get" action="">
-                        <div class="input-group">
-                            <span class="input-group-text bg-body-tertiary border-0 text-muted rounded-start-pill ps-3" id="search-icon">
-                                <span class="material-symbols-outlined fs-5" aria-hidden="true">search</span>
-                            </span>
-                            <input name="q" class="form-control bg-body-tertiary border-0 rounded-end-pill py-2" type="search" placeholder="Search across dashboard..." aria-label="Search" aria-describedby="search-icon">
-                        </div>
-                    </form>
 
                     <div class="d-flex align-items-center gap-3 ms-3">
                         <button id="themeToggleBtn" class="btn border-0 rounded-circle p-2 d-flex align-items-center justify-content-center btn-theme-toggle" aria-label="Toggle theme">
