@@ -27,6 +27,8 @@ class Command(BaseCommand):
 
         with open(csv_file_path, newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
+            # skip header line
+            next(reader)
             bookings = []
             for row in reader:
                 row = [clean_value(col) for col in row]

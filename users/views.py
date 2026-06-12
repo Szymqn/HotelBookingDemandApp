@@ -8,9 +8,9 @@ def log_in_page(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('dashboard')
@@ -25,7 +25,7 @@ def sign_up_page(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user = authenticate(username=user.username, password=form.cleaned_data['password'])
+            user = authenticate(email=user.email, password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
                 messages.success(request, "Account created and logged in successfully!")
