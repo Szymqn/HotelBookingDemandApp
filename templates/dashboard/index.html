@@ -1,108 +1,173 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard | BookWise AI{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Dashboard</h1>
-    <h6>Overview of your hotel booking demand and AI insights</h6>
-    <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Bookings</h5>
-                        <p class="card-text">{{ total_bookings }}</p>
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Welcome back!</h2>
+        <p class="text-muted mb-0">Here's an overview of your hotel's performance and AI insights.</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Stat Card 1 -->
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Total Bookings</p>
+                        <h3 class="fw-bold mb-2">{{ total_bookings }}</h3>
+                        {% if bookings_trend %}
+                            {% if bookings_trend.up %}
+                                <span class="badge bg-success-subtle text-success rounded-pill fw-medium px-2 py-1">
+                                    <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_up</span>
+                                    {{ bookings_trend.label }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger rounded-pill fw-medium px-2 py-1">
+                                    <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_down</span>
+                                    {{ bookings_trend.label }}
+                                </span>
+                            {% endif %}
+                            <span class="text-muted small ms-1">vs last month</span>
+                        {% endif %}
                     </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Avg. ADR</h5>
-                        <p class="card-text">${{ avg_adr }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Avg. Room Occupy</h5>
-                        <p class="card-text">{{ avg_room_occupy }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Hotel Demand Forecast</h3>
-                        <div id="demandChart"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">AI Insights</h3>
+                    <div class="stat-icon bg-primary-subtle text-primary" aria-hidden="true">
+                        <span class="material-symbols-outlined fs-3">book_online</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Stat Card 2 -->
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Average ADR</p>
+                        <h3 class="fw-bold mb-2">${{ avg_adr }}</h3>
+                        {% if adr_trend %}
+                            {% if adr_trend.up %}
+                                <span class="badge bg-success-subtle text-success rounded-pill fw-medium px-2 py-1">
+                                    <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_up</span>
+                                    {{ adr_trend.label }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger rounded-pill fw-medium px-2 py-1">
+                                    <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_down</span>
+                                    {{ adr_trend.label }}
+                                </span>
+                            {% endif %}
+                            <span class="text-muted small ms-1">vs last month</span>
+                        {% endif %}
+                    </div>
+                    <div class="stat-icon bg-success-subtle text-success" aria-hidden="true">
+                        <span class="material-symbols-outlined fs-3">payments</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat Card 3 -->
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Avg. Occupancy Rate</p>
+                        <h3 class="fw-bold mb-2">{{ avg_room_occupy|default:"--" }}%</h3>
+                        {% if occupancy_trend %}
+                            {% if occupancy_trend.up %}
+                                <span class="badge bg-success-subtle text-success rounded-pill fw-medium px-2 py-1">
+                                    <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_up</span>
+                                    {{ occupancy_trend.label }}
+                                </span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger rounded-pill fw-medium px-2 py-1">
+                                    <span class="material-symbols-outlined fs-6 align-middle icon-14" aria-hidden="true">trending_down</span>
+                                    {{ occupancy_trend.label }}
+                                </span>
+                            {% endif %}
+                            <span class="text-muted small ms-1">vs last month</span>
+                        {% endif %}
+                    </div>
+                    <div class="stat-icon bg-warning-subtle text-warning" aria-hidden="true">
+                        <span class="material-symbols-outlined fs-3">meeting_room</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Chart Card -->
+    <div class="col-12 col-xl-8">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title fw-bold mb-0">Demand Forecast</h5>
+            </div>
+            <div class="card-body">
+                <div id="demandChart" class="w-100 chart-min-350"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Insights Card -->
+    <div class="col-12 col-xl-4">
+        <div class="card h-100">
+            <div class="card-header border-bottom-0 pb-0">
+                <h5 class="card-title fw-bold mb-0 d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-warning" aria-hidden="true">auto_awesome</span>
+                    AI Insights
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-column gap-3">
+                    {% for insight in ai_insights %}
+                    <div class="p-3 bg-body-tertiary rounded-3 border border-light-subtle">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined {{ insight.icon_color }} fs-5" aria-hidden="true">{{ insight.icon }}</span>
+                            <h6 class="mb-0 fw-semibold">{{ insight.title }}</h6>
+                        </div>
+                        <p class="text-muted small mb-0">{{ insight.text }}</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted small">No data available yet.</p>
+                    {% endfor %}
+                </div>
+                <div class="mt-3 text-center">
+                    <a href="{% url 'ai_insights' %}" class="btn btn-link text-decoration-none fw-medium">View all insights &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    const labels = {{ chart_labels_json|safe }};
-    const seriesData = {{ chart_data_json|safe }};
-    const options = {
-        chart: {
-            type: 'area',
-            height: 350,
-            toolbar: {
-                show: true,
-                tools: {
-                    download: true,
-                    selection: true,
-                    zoom: true,
-                    zoomin: true,
-                    zoomout: true,
-                    pan: true,
-                    reset: true
-                },
-                export: {
-                    csv: {
-                        filename: 'bookings',
-                        headerCategory: 'Month',
-                        headerValue: 'Bookings'
-                    },
-                    svg: { filename: 'bookings-chart' },
-                    png: { filename: 'bookings-chart' }
-                }
-            }
-        },
-        series: [{ name: 'Bookings', data: seriesData }],
-        xaxis: {
-            categories: labels,
-            tickAmount: Math.min(labels.length, 12),
-            labels: {
-                rotate: -45,
-                trim: true
-            }
-        },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'smooth', width: 2 },
-        fill: {
-            type: 'gradient',
-            gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0, stops: [0, 100] }
-        },
-        grid: { borderColor: '#eee' },
-        yaxis: { labels: { formatter: v => Math.round(v) } },
-        tooltip: {
-            x: { formatter: (val) => val },
-            y: { formatter: v => v + ' bookings' }
-        },
-        colors: ['#0066ff']
-    };
-    new ApexCharts(document.querySelector("#demandChart"), options).render();
+    document.addEventListener("DOMContentLoaded", function() {
+        const labels = {{ chart_labels_json|safe|default:"[]" }};
+        const seriesData = {{ chart_data_json|safe|default:"[]" }};
+        const options = window.BookWiseCharts.areaOptions({
+            labels: labels,
+            seriesName: 'Bookings',
+            seriesData: seriesData,
+            color: '#4338ca',
+            yLabelFormatter: v => Math.round(v),
+            tooltipYFormatter: v => v + ' bookings',
+            gridExtras: { yaxis: { lines: { show: true } } }
+        });
+        const chartElement = document.querySelector("#demandChart");
+        if(chartElement) {
+            new ApexCharts(chartElement, options).render();
+        }
+    });
 </script>
 {% endblock %}

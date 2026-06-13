@@ -1,179 +1,222 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Analytics{% endblock %}
+{% block title %}Analytics | BookWise AI{% endblock %}
+{% block header_title %}Analytics{% endblock %}
 
 {% block content %}
-    <h1>Analytics</h1>
-    <h6>View analytics and reports here.</h6>
-    <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Avg. ADR</h5>
-                        <p class="card-text">${{ avg_adr }}</p>
-                        <p class="card-text fs-7">Average Daily Rate</p>
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Performance Analytics</h2>
+        <p class="text-muted mb-0">View comprehensive analytics and AI reporting models.</p>
+    </div>
+</div>
+
+{% if computing %}
+<div class="d-flex flex-column align-items-center justify-content-center py-5 mt-4">
+    <div class="spinner-border text-primary mb-4" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <h4 class="fw-semibold mb-2">Computing SHAP Analysis</h4>
+    <p class="text-muted text-center mb-4">
+        Building the ML model explanation in the background.<br>
+        This takes about 30–60 seconds on first run. The page will refresh automatically.
+    </p>
+    <div class="progress w-50" style="height: 6px;">
+        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary w-100"></div>
+    </div>
+</div>
+<script>
+(function poll() {
+    fetch("{% url 'analytics_status' %}")
+        .then(r => r.json())
+        .then(d => { if (d.ready) location.reload(); else setTimeout(poll, 2000); })
+        .catch(() => setTimeout(poll, 3000));
+})();
+</script>
+
+{% else %}
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-md-6">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Average Daily Rate (ADR)</p>
+                        <h3 class="fw-bold mb-2">${{ avg_adr }}</h3>
+                        <p class="text-muted small mb-0">Calculated across all active properties</p>
                     </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Avg. Length of Stay</h5>
-                        <p class="card-text">{{ avg_room_occupy }}</p>
-                        <p class="card-text fs-7">Nights per booking</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">ADR Trends</h5>
-                        <p class="card-text">Monthly revenue and booking volume analysis</p>
-                        <div id="adrTrendChart"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">SHAP summary plot</h5>
-                        <p class="card-text"></p>
-                        <div id="shapBoxPlot"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">SHAP Local Explanation (Row)</h5>
-                        <p class="card-text small mb-1">
-                          Base: <span id="wfBase"></span> | Prediction: <span id="wfPred"></span> | Row: <span id="wfRow"></span>
-                        </p>
-                        <div id="shapWaterfallChart"></div>
+                    <div class="stat-icon bg-success-subtle text-success">
+                        <span class="material-symbols-outlined fs-3">payments</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="col-12 col-md-6">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Average Length of Stay</p>
+                        <h3 class="fw-bold mb-2">{{ avg_room_occupy }} <span class="fs-5 text-muted fw-normal">nights</span></h3>
+                        <p class="text-muted small mb-0">Average nights per booking</p>
+                    </div>
+                    <div class="stat-icon bg-info-subtle text-info">
+                        <span class="material-symbols-outlined fs-3">night_shelter</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header border-bottom-0 pb-0">
+                <h5 class="card-title fw-bold mb-0">ADR Trends</h5>
+                <p class="text-muted small mt-1 mb-0">Monthly revenue and booking volume analysis</p>
+            </div>
+            <div class="card-body">
+                <div id="adrTrendChart" class="chart-min-350"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-xl-6">
+        <div class="card h-100">
+            <div class="card-header border-bottom-0 pb-0">
+                <h5 class="card-title fw-bold mb-0 d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">data_usage</span>
+                    SHAP Summary Plot
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="shapBoxPlot" class="chart-min-400"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-6">
+        <div class="card h-100">
+            <div class="card-header border-bottom-0 pb-0">
+                <h5 class="card-title fw-bold mb-0 d-flex align-items-center gap-2">
+                    <span class="material-symbols-outlined text-info">waterfall_chart</span>
+                    SHAP Local Explanation
+                </h5>
+                <p class="text-muted small mt-2 mb-0 bg-body-tertiary p-2 rounded-2">
+                    <span class="fw-semibold">Base:</span> <span id="wfBase"></span> &bull;
+                    <span class="fw-semibold">Prediction:</span> <span id="wfPred"></span> &bull;
+                    <span class="fw-semibold">Row:</span> <span id="wfRow"></span>
+                </p>
+            </div>
+            <div class="card-body">
+                <div id="shapWaterfallChart" class="chart-min-400"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    const labels = {{ chart_label_json|safe }};
-    const adrSeries = {{ chart_adr_json|safe }};
+document.addEventListener("DOMContentLoaded", function() {
+    const fontFamily = "'Segoe UI', system-ui, -apple-system, sans-serif";
+    const isDark = window.BookWiseCharts.isDarkTheme();
 
-    new ApexCharts(document.querySelector("#adrTrendChart"), {
-        chart: {
-            type: 'area',
-            height: 350,
-            toolbar: {
-                show: true
+    // ADR Trend Chart
+    const labels = {{ chart_label_json|safe|default:"[]" }};
+    const adrSeries = {{ chart_adr_json|safe|default:"[]" }};
+
+    new ApexCharts(document.querySelector("#adrTrendChart"), window.BookWiseCharts.areaOptions({
+        labels: labels,
+        seriesName: 'Avg ADR',
+        seriesData: adrSeries,
+        color: '#10b981',
+        strokeWidth: 3,
+        yLabelFormatter: v => '$' + v,
+        tooltipYFormatter: v => '$' + v.toFixed(2)
+    })).render();
+
+    // SHAP Box Plot
+    const shapBoxData = {{ shap_box_json|safe|default:"[]" }};
+    if (shapBoxData && shapBoxData.length > 0) {
+        new ApexCharts(document.querySelector("#shapBoxPlot"), {
+            chart: { type: 'boxPlot', height: 400, fontFamily: fontFamily, toolbar: { show: false } },
+            series: [{ name: 'SHAP', data: shapBoxData }],
+            plotOptions: {
+                boxPlot: { colors: { upper: '#4338ca', lower: '#818cf8' } }
+            },
+            xaxis: {
+                labels: { style: window.BookWiseCharts.axisLabelStyle(), rotate: -30 }
+            },
+            yaxis: {
+                labels: { style: window.BookWiseCharts.axisLabelStyle() }
+            },
+            grid: window.BookWiseCharts.gridOptions(),
+            tooltip: { theme: isDark ? 'dark' : 'light', y: { formatter: v => v.toFixed(4) } }
+        }).render();
+    }
+
+    // SHAP Waterfall Chart
+    const wf = {{ shap_waterfall_json|safe|default:"null" }};
+    if (wf) {
+        document.getElementById('wfBase').textContent = wf.base_value;
+        document.getElementById('wfPred').textContent = wf.prediction;
+        document.getElementById('wfRow').textContent = wf.row_index;
+
+        const categories = wf.features.map(f => f.feature);
+        const shapData = wf.features.map(f => f.shap);
+        const colors = wf.features.map(f => f.shap > 0 ? '#10b981' : '#ef4444');
+
+        new ApexCharts(document.querySelector("#shapWaterfallChart"), {
+            chart: { type: 'bar', height: 400, fontFamily: fontFamily, toolbar: { show: false } },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    barHeight: '60%',
+                    dataLabels: { position: 'right' },
+                    borderRadius: 2
+                }
+            },
+            series: [{ name: 'SHAP', data: shapData }],
+            xaxis: {
+                categories: categories,
+                title: { text: 'Contribution (model output units)', style: { color: '#6b7280', fontWeight: 500 } },
+                labels: { style: { colors: isDark ? '#9ca3af' : '#6b7280' }, formatter: v => Number(v).toFixed(3) }
+            },
+            yaxis: {
+                labels: { style: { colors: '#4b5563', fontSize: '12px', fontWeight: 500 } }
+            },
+            colors: colors,
+            grid: window.BookWiseCharts.gridOptions(),
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+                y: {
+                    formatter: (val, opts) => {
+                        const f = wf.features[opts.dataPointIndex];
+                        return `SHAP: ${val.toFixed(4)} | Value: ${f.value}`;
+                    }
+                }
+            },
+            annotations: {
+                xaxis: [
+                    { x: wf.base_value, borderColor: '#9ca3af', label: { text: 'Base', style: { background: isDark ? '#4b5563' : '#9ca3af', color: '#fff' } } },
+                    { x: wf.prediction, borderColor: '#1f2937', label: { text: 'Prediction', style: { background: isDark ? '#9ca3af' : '#1f2937', color: '#fff' } } }
+                ]
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: (val) => val.toFixed(3),
+                style: { colors: [isDark ? '#e5e7eb' : '#1f2937'], fontWeight: 500 },
+                offsetX: 20
             }
-        },
-        series: [{ name: 'Avg ADR', data: adrSeries }],
-        xaxis: {
-            categories: labels,
-            tickAmount: Math.min(labels.length, 12),
-            labels: {
-                rotate: -45,
-                trim: true
-            }
-        },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'smooth', width: 3 },
-        fill: {
-            type: 'gradient',
-            gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0, stops: [0, 100] }
-        },
-        tooltip: {
-            y: { formatter: v => '$' + v.toFixed(2) } },
-        yaxis: { labels: { formatter: v => '$' + v } },
-        colors: ['#0066ff']
-    }).render();
+        }).render();
+    }
+});
 </script>
-
-<script>
-    const shapBoxData = {{ shap_box_json|safe }};
-    new ApexCharts(document.querySelector("#shapBoxPlot"), {
-        chart: { type: 'boxPlot', height: 450, toolbar: { show: true } },
-        series: [{ name: 'SHAP', data: shapBoxData }],
-        plotOptions: {
-            boxPlot: { colors: { upper: '#1E90FF', lower: '#87CEFA' } }
-        },
-        xaxis: { labels: { rotate: -30 } },
-        tooltip: {
-            y: {
-                formatter: v => v.toFixed(4)
-            }
-        }
-    }).render();
-</script>
-
-<script>
-  (function() {
-    const wf = {{ shap_waterfall_json|safe }};
-    document.getElementById('wfBase').textContent = wf.base_value;
-    document.getElementById('wfPred').textContent = wf.prediction;
-    document.getElementById('wfRow').textContent = wf.row_index;
-
-    const categories = wf.features.map(f => f.feature);
-    const shapData = wf.features.map(f => f.shap);
-    const colors = wf.features.map(f => '#1E90FF');
-
-    new ApexCharts(document.querySelector("#shapWaterfallChart"), {
-      chart: { type: 'bar', height: 500, toolbar: { show: true } },
-      plotOptions: {
-        bar: {
-          horizontal: true,
-          barHeight: '70%',
-          dataLabels: { position: 'right' }
-        }
-      },
-      series: [{ name: 'SHAP', data: shapData }],
-      xaxis: {
-        categories: categories,
-        title: { text: 'Contribution (model output units)' },
-        labels: { formatter: v => Number(v).toFixed(3) }
-      },
-      yaxis: {
-        labels: {
-          style: { fontSize: '12px' }
-        }
-      },
-      colors: colors,
-      tooltip: {
-        y: {
-          formatter: (val, opts) => {
-            const f = wf.features[opts.dataPointIndex];
-            return `SHAP: ${val.toFixed(4)} | Value: ${f.value}`;
-          }
-        }
-      },
-      annotations: {
-        xaxis: [
-          {
-            x: wf.base_value,
-            borderColor: '#888',
-            label: { text: 'Base', style: { background: '#888', color: '#fff' } }
-          },
-            {
-            x: wf.prediction,
-            borderColor: '#222',
-            label: { text: 'Prediction', style: { background: '#222', color: '#fff' } }
-          }
-        ]
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: (val) => val.toFixed(3),
-        style: { colors: ['#333'] }
-      }
-    }).render();
-  })();
-</script>
+{% endif %}
 {% endblock %}

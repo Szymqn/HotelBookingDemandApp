@@ -1,118 +1,143 @@
 {% extends 'base.html' %}
 
-{% block title %}Demand Forecast{% endblock %}
+{% block title %}Demand Forecast | BookWise AI{% endblock %}
+{% block header_title %}Demand Forecast{% endblock %}
 
 {% block content %}
-    <h1>Demand Forecast</h1>
-    <h6>AI-powered demand predictions and capacity planning</h6>
-    <div class="container-fluid">
-        <div class="row mb-4">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Next Month Prediction</h5>
-                        <p class="card-text fs-4">94%</p>
-                        <p class="card-text fs-6">Expected occupancy rate</p>
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Demand Forecast</h2>
+        <p class="text-muted mb-0">AI-powered demand predictions and capacity planning</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Stat Card 1 -->
+    <div class="col-12 col-md-4">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Next Month Prediction</p>
+                        <h3 class="fw-bold mb-2">94%</h3>
+                        <p class="text-muted small mb-0">Expected occupancy rate</p>
                     </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Peak Season Alert</h5>
-                        <p class="card-text fs-4">Dec 15-31</p>
-                        <p class="card-text fs-6">Highest demand period</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Capacity Warning</h5>
-                        <p class="card-text fs-4">98%</p>
-                        <p class="card-text fs-6">December utilization</p>
+                    <div class="stat-icon bg-info-subtle text-info">
+                        <span class="material-symbols-outlined fs-3">analytics</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mb-4">
-            <div class="col-9">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Annual Demand Forecast</h5>
-                        <div id="demandChart"></div>
+    </div>
+    
+    <!-- Stat Card 2 -->
+    <div class="col-12 col-md-4">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Peak Season Alert</p>
+                        <h3 class="fw-bold mb-2">Dec 15-31</h3>
+                        <p class="text-muted small mb-0">Highest demand period</p>
+                    </div>
+                    <div class="stat-icon bg-warning-subtle text-warning">
+                        <span class="material-symbols-outlined fs-3">wb_sunny</span>
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Seasonal Factors</h5>
-                        <p class="card-text fs-6">Key factors influencing demand predictions</p>
-                        <div class="card">
-                            <div class="card-body py-2">
-                                <h5 class="card-title">Holiday season</h5>
-                                <p class="card-text fs-6">95% confidence</p>
-                            </div>
+        </div>
+    </div>
+    
+    <!-- Stat Card 3 -->
+    <div class="col-12 col-md-4">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted fw-medium mb-1">Capacity Warning</p>
+                        <h3 class="fw-bold mb-2">98%</h3>
+                        <p class="text-muted small mb-0">December utilization</p>
+                    </div>
+                    <div class="stat-icon bg-danger-subtle text-danger">
+                        <span class="material-symbols-outlined fs-3">warning</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-9">
+        <div class="card h-100">
+            <div class="card-header border-bottom-0 pb-0">
+                <h5 class="card-title fw-bold mb-0">Annual Demand Forecast</h5>
+            </div>
+            <div class="card-body">
+                <div id="demandChart" class="w-100 chart-min-350"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-3">
+        <div class="card h-100">
+            <div class="card-header border-bottom-0 pb-0">
+                <h5 class="card-title fw-bold mb-0">Seasonal Factors</h5>
+                <p class="text-muted small mb-0 mt-1">Key factors influencing predictions</p>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-column gap-3">
+                    <div class="p-3 bg-body-tertiary rounded-3 border border-light-subtle d-flex align-items-center gap-3">
+                        <div class="bg-primary-subtle text-primary rounded-circle p-2 d-flex">
+                            <span class="material-symbols-outlined fs-5">celebration</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-semibold">Holiday season</h6>
+                            <p class="text-success small mb-0 fw-medium">95% confidence</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 bg-body-tertiary rounded-3 border border-light-subtle d-flex align-items-center gap-3">
+                        <div class="bg-info-subtle text-info rounded-circle p-2 d-flex">
+                            <span class="material-symbols-outlined fs-5">event</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-semibold">Local Conventions</h6>
+                            <p class="text-success small mb-0 fw-medium">88% confidence</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-3 bg-body-tertiary rounded-3 border border-light-subtle d-flex align-items-center gap-3">
+                        <div class="bg-secondary-subtle text-secondary rounded-circle p-2 d-flex">
+                            <span class="material-symbols-outlined fs-5">flight</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-semibold">Flight Searches</h6>
+                            <p class="text-warning small mb-0 fw-medium">72% confidence</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 <script>
-    const labels = {{ chart_labels_json|safe }};
-    const seriesData = {{ chart_data_json|safe }};
-    const options = {
-        chart: {
-            type: 'area',
-            height: 350,
-            toolbar: {
-                show: true,
-                tools: {
-                    download: true,
-                    selection: true,
-                    zoom: true,
-                    zoomin: true,
-                    zoomout: true,
-                    pan: true,
-                    reset: true
-                },
-                export: {
-                    csv: {
-                        filename: 'bookings',
-                        headerCategory: 'Month',
-                        headerValue: 'Bookings'
-                    },
-                    svg: { filename: 'bookings-chart' },
-                    png: { filename: 'bookings-chart' }
-                }
-            }
-        },
-        series: [{ name: 'Bookings', data: seriesData }],
-        xaxis: {
-            categories: labels,
-            tickAmount: Math.min(labels.length, 12),
-            labels: {
-                rotate: -45,
-                trim: true
-            }
-        },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'smooth', width: 2 },
-        fill: {
-            type: 'gradient',
-            gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0, stops: [0, 100] }
-        },
-        grid: { borderColor: '#eee' },
-        yaxis: { labels: { formatter: v => Math.round(v) } },
-        tooltip: {
-            x: { formatter: (val) => val },
-            y: { formatter: v => v + ' bookings' }
-        },
-        colors: ['#0066ff']
-    };
-    new ApexCharts(document.querySelector("#demandChart"), options).render();
+    document.addEventListener("DOMContentLoaded", function() {
+        const labels = {{ chart_labels_json|safe|default:"[]" }};
+        const seriesData = {{ chart_data_json|safe|default:"[]" }};
+        const options = window.BookWiseCharts.areaOptions({
+            labels: labels,
+            seriesName: 'Predicted Bookings',
+            seriesData: seriesData,
+            color: '#0ea5e9',
+            yLabelFormatter: v => Math.round(v),
+            tooltipYFormatter: v => v + ' bookings',
+            gridExtras: { yaxis: { lines: { show: true } } }
+        });
+        const chartElement = document.querySelector("#demandChart");
+        if(chartElement) {
+            new ApexCharts(chartElement, options).render();
+        }
+    });
 </script>
 {% endblock %}

@@ -1,8 +1,130 @@
 {% extends 'base.html' %}
 
-{% block title %}Settings{% endblock %}
+{% block title %}Settings | BookWise AI{% endblock %}
+{% block header_title %}Settings{% endblock %}
 
 {% block content %}
-    <h1>Settings</h1>
-    <h6>Manage your account, preferences, and system configuration</h6>
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Settings</h2>
+        <p class="text-muted mb-0">Manage your account, preferences, and system configuration</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-primary d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined fs-6">save</span> Save Changes
+        </button>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-xl-4">
+        <!-- Profile Card -->
+        <div class="card mb-4">
+            <div class="card-body p-4 text-center">
+                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold mx-auto mb-3 avatar-lg">
+                    {{ request.user.first_name|default:request.user.username|make_list|first|upper }}
+                </div>
+                <h5 class="fw-bold mb-1">{{ request.user.get_full_name|default:request.user.username }}</h5>
+                <p class="text-muted small mb-3">{{ request.user.email }}</p>
+                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1">Administrator</span>
+            </div>
+            <div class="card-footer bg-transparent border-top p-3 text-center">
+                <button class="btn btn-sm btn-outline-primary">Change Avatar</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header border-bottom-0 pb-0">
+                <h6 class="fw-bold mb-0">System Status</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0 d-flex justify-content-between align-items-center bg-transparent border-color-translucent">
+                        <span class="text-muted small">AI Prediction Model</span>
+                        <span class="badge bg-success">Online</span>
+                    </li>
+                    <li class="list-group-item px-0 d-flex justify-content-between align-items-center bg-transparent border-color-translucent">
+                        <span class="text-muted small">Data Synchronization</span>
+                        <span class="badge bg-success">Up to date</span>
+                    </li>
+                    <li class="list-group-item px-0 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
+                        <span class="text-muted small">Version</span>
+                        <span class="text-body small fw-medium">v2.4.1</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-8">
+        <div class="card h-100">
+            <div class="card-body p-4">
+                <form>
+                    <h6 class="fw-bold mb-3">Personal Information</h6>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">First Name</label>
+                            <input type="text" class="form-control" value="{{ request.user.first_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Last Name</label>
+                            <input type="text" class="form-control" value="{{ request.user.last_name }}">
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label small fw-medium text-muted">Email Address</label>
+                            <input type="email" class="form-control" value="{{ request.user.email }}">
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Dashboard Preferences</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Default View</label>
+                            <select class="form-select">
+                                <option>Dashboard</option>
+                                <option>Bookings</option>
+                                <option>Demand Forecast</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium text-muted">Timezone</label>
+                            <select class="form-select">
+                                <option>(UTC) Western Europe Time</option>
+                                <option>(UTC -05:00) Eastern Time (US & Canada)</option>
+                                <option>(UTC +01:00) Central European Time</option>
+                            </select>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                                <label class="form-check-label small fw-medium text-body" for="darkModeSwitch">Enable Dark Mode</label>
+                            </div>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="weeklyReports" checked>
+                                <label class="form-check-label small fw-medium text-body" for="weeklyReports">Receive weekly summary reports</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const darkModeSwitch = document.getElementById('darkModeSwitch');
+    
+    // Set initial state based on HTML attribute
+    darkModeSwitch.checked = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    
+    darkModeSwitch.addEventListener('change', () => {
+        const theme = darkModeSwitch.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        if (typeof setTheme === 'function') setTheme(theme);
+        
+        window.dispatchEvent(new Event('themeChanged'));
+    });
+});
+</script>
 {% endblock %}
