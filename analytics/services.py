@@ -48,6 +48,16 @@ def try_load_from_disk() -> bool:
     return True
 
 
+def _compute_artifacts_thread() -> None:
+    """Run SHAP precomputation in a background thread (Celery fallback)."""
+    try:
+        from analytics.tasks import precompute_shap_artifacts
+
+        precompute_shap_artifacts()
+    except Exception:
+        pass
+
+
 def ensure_artifacts() -> bool:
     """Returns True if artifacts are ready, False if still computing."""
     global _task_sent
@@ -65,9 +75,9 @@ def ensure_artifacts() -> bool:
                 from analytics.tasks import precompute_shap_artifacts
 
                 precompute_shap_artifacts.delay()
-                _task_sent = True
             except Exception:
-                pass
+                threading.Thread(target=_compute_artifacts_thread, daemon=True).start()
+            _task_sent = True
         return False
 
 
