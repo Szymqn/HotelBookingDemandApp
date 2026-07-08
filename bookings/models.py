@@ -87,7 +87,7 @@ class Booking(models.Model):
     distribution_channel = models.CharField(max_length=20, choices=DISTRIBUTION_CHANNEL_CHOICES)
     is_repeated_guest = models.BooleanField()
     previous_cancellations = models.IntegerField()
-    previous_booking_not_canceled = models.IntegerField()
+    previous_bookings_not_canceled = models.IntegerField()
     reserved_room_type = models.CharField(max_length=1)
     assigned_room_type = models.CharField(max_length=1)
     booking_changes = models.IntegerField()

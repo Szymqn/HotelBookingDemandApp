@@ -63,7 +63,7 @@ class Command(BaseCommand):
                     distribution_channel=row[15],
                     is_repeated_guest=bool(int(row[16])),
                     previous_cancellations=int(row[17]),
-                    previous_booking_not_canceled=int(row[18]),
+                    previous_bookings_not_canceled=int(row[18]),
                     reserved_room_type=row[19],
                     assigned_room_type=row[20],
                     booking_changes=int(row[21]),
